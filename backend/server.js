@@ -25,10 +25,13 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('👑 Royal Ghee & Sweets API is Live!');
+// Root route - specific for health checks
+app.get('/api', (req, res) => {
+  res.send('👑 Royal Ghee & Sweets API - Production Status: Active');
 });
+
+// Redirect old root to /api if needed, or just let Vercel handle it
+// app.get('/', (req, res) => res.redirect('/api'));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -50,34 +53,60 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/royalghee';
 
-let isConnected = false;
+let cachedConnection = null;
+
 const connectDB = async () => {
-  if (isConnected) return;
+  if (cachedConnection) return cachedConnection;
+  
   try {
-    await mongoose.connect(MONGO_URI);
-    isConnected = true;
+    console.log('⏳ Connecting to MongoDB...');
+    cachedConnection = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000, // Timeout faster if DB is down
+    });
     console.log('✅ MongoDB connected successfully');
-    await seedAdmin();
-    await seedInitialData();
+    
+    // Seeding moved out of here to avoid timeouts on Vercel
+    return cachedConnection;
   } catch (err) {
     console.error('❌ MongoDB connection failed:', err.message);
+    cachedConnection = null;
+    throw err;
   }
 };
 
+// Manual Seeding Route (Hit this once after deployment)
+app.get('/api/admin/seed-db', async (req, res) => {
+  try {
+    await connectDB();
+    console.log('🌱 Manual seeding started...');
+    await seedAdmin();
+    await seedInitialData();
+    res.json({ message: '🎉 Database seeded successfully!' });
+  } catch (err) {
+    res.status(500).json({ message: 'Seeding failed', error: err.message });
+  }
+});
+
 // Start server only if not running as a Vercel serverless function
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  connectDB().then(() => {
+  connectDB().then(async () => {
+    // Local dev: seed automatically if you want, or just leave it manual
+    await seedAdmin();
+    await seedInitialData();
     app.listen(PORT, () => {
-      console.log(`🚀 Royal Ghee & Sweets API running on http://localhost:${PORT}`);
+      console.log(`🚀 API running on http://localhost:${PORT}`);
     });
   });
 }
 
-// For Vercel, we need to ensure DB is connected on every request
-// We can use a middleware or just export the app
+// For Vercel, we ensure DB is connected
 app.use(async (req, res, next) => {
-  await connectDB();
-  next();
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: 'Database connection error', error: err.message });
+  }
 });
 
 module.exports = app;
