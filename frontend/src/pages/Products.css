@@ -1,0 +1,106 @@
+.products-page-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.products-sidebar {
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sidebar-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+.sidebar-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+
+.cat-filter-list { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.cat-filter-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius);
+  border: none;
+  background: transparent;
+  color: var(--text-mid);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition-fast);
+}
+
+.cat-filter-btn:hover { background: var(--cream); color: var(--green-primary); }
+.cat-filter-btn.active {
+  background: var(--gold-pale);
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.cat-count {
+  font-size: 0.72rem;
+  background: var(--cream);
+  color: var(--text-muted);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+}
+
+.sidebar-wa {
+  background: linear-gradient(135deg, var(--green-primary), var(--green-mid));
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  color: var(--white);
+  text-align: center;
+}
+.sidebar-wa p { font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 0.75rem; }
+
+.products-toolbar {
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.results-count { font-size: 0.875rem; color: var(--text-muted); }
+
+.products-grid-page {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.page-info { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .products-page-layout { grid-template-columns: 1fr; }
+  .products-sidebar { position: static; }
+  .products-grid-page { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .products-grid-page { grid-template-columns: 1fr; }
+}
