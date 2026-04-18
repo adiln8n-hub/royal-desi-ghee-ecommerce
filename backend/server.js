@@ -71,12 +71,12 @@ app.get('/api/health', (req, res) => {
 });
 
 // Manual Seeding Route (Hit this once after deployment)
-app.get('/api/admin/seed-db', async (req, res) => {
+app.get(['/api/admin/seed-db', '/admin/seed-db', '/seed-db'], async (req, res) => {
   try {
     console.log('🌱 Manual seeding started...');
     await seedAdmin();
     await seedInitialData();
-    res.json({ message: '🎉 Database seeded successfully!' });
+    res.json({ message: '🎉 Database seeded successfully! Your products are now live.' });
   } catch (err) {
     res.status(500).json({ message: 'Seeding failed', error: err.message });
   }
