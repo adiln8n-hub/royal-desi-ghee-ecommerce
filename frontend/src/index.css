@@ -5,6 +5,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('https://cdn.jsdelivr.net/gh/naqash/jameel-noori-nastaleeq-web-font@master/JameelNooriNastaleeq-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ─── CSS Variables ─────────────────────────────────────────────────────────── */
 :root {
   /* Core Brand Colors */
@@ -40,7 +48,7 @@
   /* Typography */
   --font-heading:     'Playfair Display', 'Georgia', serif;
   --font-body:        'Inter', 'Helvetica Neue', sans-serif;
-  --font-urdu:        'Noto Nastaliq Urdu', serif;
+  --font-urdu:        'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;
 
   /* Spacing */
   --section-py:       5rem;
@@ -79,6 +87,8 @@ body {
 [dir="rtl"] {
   font-family: var(--font-urdu), var(--font-body);
   text-align: right;
+  line-height: 2;
+  font-size: 1.1rem;
 }
 
 [dir="rtl"] .navbar-menu { flex-direction: row-reverse; }
