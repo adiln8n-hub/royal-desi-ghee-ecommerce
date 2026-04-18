@@ -184,7 +184,11 @@ export default function Checkout() {
               </div>
 
               <a
-                href="https://wa.me/923441272427"
+                href={`https://wa.me/923441272427?text=${encodeURIComponent(
+                  `Assalam-o-Alaikum! Mujhe apna *Order* book karwana hai:\n\n` + 
+                  items.map((i, idx) => `${idx + 1}. ${i.title} (${i.weight || 'N/A'}) - Qty: ${i.quantity}`).join('\n') + 
+                  `\n\n*Total Bill:* Rs. ${total}\n\nMeherbani farma kar mera order confirm kar den.`
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-green"

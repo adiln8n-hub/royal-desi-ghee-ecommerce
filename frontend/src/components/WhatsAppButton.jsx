@@ -7,7 +7,7 @@ export default function WhatsAppButton() {
   return (
     <a
       id="whatsapp-float-btn"
-      href="https://wa.me/923441272427"
+      href="https://wa.me/923441272427?text=Assalam-o-Alaikum!%20Mujhe%20Royal%20Desi%20Ghee%20%26%20Sweets%20ki%20products%20ke%20bary%20mein%20maloomat%20chahiye."
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float"
